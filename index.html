@@ -133,23 +133,23 @@
         stops, colors, and opacity, faithfully — and keep every gradient
         in a reusable local library.</p>
         <div class="buttons">
-            <a class="btn" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.1.0-arm64.dmg">
+            <a class="btn" id="dl-mac" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.1.0-arm64.dmg">
                 Download for macOS
                 <small>Apple Silicon · free · local-only</small>
             </a>
-            <a class="btn" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.1.0.exe">
+            <a class="btn" id="dl-win" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.1.0.exe">
                 Download for Windows
                 <small>x64 installer · free · local-only</small>
             </a>
         </div>
         <div class="buttons">
-            <a class="btn" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.0.2.zxp">
+            <a class="btn" id="dl-zxp" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.0.2.zxp">
                 AE extension (.zxp)
                 <small>After Effects panel</small>
             </a>
             <a class="btn" href="https://www.figma.com/community/plugin/1677006395591094645">
                 Figma plugin
-                <small>Figma Community</small>
+                <small>Figma Community · pending review</small>
             </a>
         </div>
     </div>
@@ -167,7 +167,8 @@
                 <em>Window&nbsp;→&nbsp;Extensions&nbsp;→&nbsp;Transporter</em>.</li>
             <li><strong>Install the Figma plugin</strong> from the
                 <a href="https://www.figma.com/community/plugin/1677006395591094645">Community
-                page</a>.</li>
+                page</a> <span class="fine">(currently in Figma's review
+                queue — check back soon if the page isn't live yet)</span>.</li>
             <li>With the hub open: select a gradient-filled layer in Figma and
                 hit <em>Send to After Effects</em>. The gradient lands on your
                 selected shape layer and is saved to the library.</li>
@@ -197,8 +198,31 @@
     </section>
 
     <footer>
-        Transporter v1.0.0 · made by Thomas Latvys
+        Transporter <span id="version">v1.1.0</span> ·
+        <a href="https://github.com/tlatvys-ac/transporter-app/releases">release notes</a> ·
+        made by Thomas Latvys
     </footer>
+
+    <script>
+    // Keep the version and download links pointing at the latest
+    // release automatically; the hardcoded values above are the
+    // fallback if this fetch fails.
+    fetch("https://api.github.com/repos/tlatvys-ac/transporter-app/releases/latest")
+        .then((r) => r.json())
+        .then((rel) => {
+            const v = (rel.tag_name || "").replace(/^v/, "");
+            if (v) document.getElementById("version").textContent = "v" + v;
+            const link = (id, re) => {
+                const asset = (rel.assets || []).find((a) => re.test(a.name));
+                const el = document.getElementById(id);
+                if (asset && el) el.href = asset.browser_download_url;
+            };
+            link("dl-mac", /arm64\.dmg$/);
+            link("dl-win", /\.exe$/);
+            link("dl-zxp", /\.zxp$/);
+        })
+        .catch(() => {});
+    </script>
 </div>
 </body>
 </html>
