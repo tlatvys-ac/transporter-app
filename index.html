@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transporter — beam gradients from Figma into After Effects</title>
+<meta name="description" content="Transporter faithfully transports gradients — stops, colors, and per-stop opacity — from Figma to After Effects, and keeps them in a reusable local library.">
+<style>
+    :root {
+        --bg: #1E2024;
+        --surface: #2A2D33;
+        --border: #4A4D54;
+        --text: #DDD;
+        --text-strong: #FFF;
+        --muted: #8A8F98;
+        --accent: #4DA6FF;
+        --green: #4DB86B;
+        --gold: #FFC53D;
+    }
+    * { box-sizing: border-box; }
+    body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+    }
+    .wrap {
+        max-width: 660px;
+        margin: 0 auto;
+        padding: 56px 24px 80px;
+    }
+    .hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 14px;
+        margin-bottom: 48px;
+    }
+    .mark { width: 96px; height: 96px; color: #FFF; }
+    h1 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: 0.3em;
+        color: var(--text-strong);
+    }
+    .tagline { margin: 0; color: var(--muted); font-size: 15px; max-width: 420px; }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .btn {
+        display: inline-block;
+        background: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 6px;
+        color: var(--text-strong);
+        font-size: 14px;
+        font-weight: 700;
+        padding: 10px 22px;
+        text-decoration: none;
+        transition: border-color 120ms, color 120ms, background-color 120ms;
+        white-space: nowrap;
+    }
+    .btn:hover { border-color: #FFF; }
+    .btn:active { background: rgba(77, 166, 255, 0.15); }
+    .btn small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+
+    section { margin-top: 40px; }
+    .divider {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 14px;
+    }
+    .divider::before, .divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+    }
+    .divider span {
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+    }
+    ol { margin: 0; padding-left: 22px; }
+    li { margin-bottom: 10px; }
+    li::marker { color: var(--accent); font-weight: 700; }
+    a { color: var(--accent); }
+    .note {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--gold);
+        border-radius: 6px;
+        padding: 12px 14px;
+        font-size: 13px;
+        color: var(--text);
+        margin-top: 14px;
+    }
+    .note strong { color: var(--gold); }
+    .fine { color: var(--muted); font-size: 12px; }
+    footer {
+        margin-top: 56px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 12px;
+    }
+    code {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 1px 6px;
+        font-size: 12px;
+    }
+</style>
+</head>
+<body>
+<div class="wrap">
+    <div class="hero">
+        <svg class="mark" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="beam" x1="256.977" y1="250.096" x2="256.977" y2="479.601" gradientUnits="userSpaceOnUse"><stop offset=".076" stop-color="currentColor"/><stop offset=".96" stop-color="currentColor" stop-opacity=".1"/></linearGradient></defs><path d="M319.623,446.052c0,14.923-28.047,32.696-62.646,32.696s-62.646-17.774-62.646-32.696l23.783-227.651c0-11.023,17.399-19.959,38.862-19.959s38.862,8.936,38.862,19.959l23.783,227.651Z" fill="url(#beam)"/><path d="M463.655,179.181c-24.4-27.739-60.111-49.103-102.46-62.351-5.72-1.79-10.041-6.437-11.627-12.217-11.271-41.082-48.955-71.36-93.571-71.36s-82.301,30.278-93.571,71.36c-1.586,5.78-5.907,10.428-11.627,12.217-42.349,13.249-78.059,34.612-102.45,62.351h0c-6.166,7.01-5.743,17.625.961,24.122l.002.002c42.727,41.366,119.998,66.074,206.696,66.074s163.959-24.707,206.676-66.074l.007-.007c6.702-6.495,7.127-17.106.966-24.117h0ZM255.997,68.242c18.418,0,34.99,8.071,46.362,20.863,5.24,5.895.325,15.124-7.521,14.317-12.662-1.301-25.631-1.968-38.821-1.968h-.01c-13.201,0-26.177.663-38.847,1.962-7.845.804-12.758-8.424-7.519-14.317,11.368-12.787,27.939-20.857,46.356-20.857ZM361.007,219.838c-31.589,9.515-67.901,14.55-105,14.55s-73.421-5.035-105.01-14.55c-20.39-6.137-38.494-14.078-53.607-23.446-5.223-3.238-5.508-10.709-.584-14.385,15.396-11.492,33.984-21.194,54.978-28.621,3.042-1.079,6.133-2.099,9.272-3.081,10.896-3.402,22.287-6.201,34.018-8.369,19.595-3.625,40.142-5.492,60.932-5.492h.01c20.79,0,41.318,1.866,60.903,5.492,11.731,2.158,23.123,4.957,34.018,8.369,3.139.982,6.24,2.012,9.292,3.091,20.992,7.419,39.573,17.125,54.966,28.613,4.925,3.676,4.64,11.148-.583,14.386-15.112,9.367-33.216,17.308-53.605,23.445Z" fill="currentColor"/></svg>
+        <h1>TRANSPORTER</h1>
+        <p class="tagline">Beam gradients from Figma into After Effects —
+        stops, colors, and opacity, faithfully — and keep every gradient
+        in a reusable local library.</p>
+        <div class="buttons">
+            <a class="btn" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.0.0-arm64.dmg">
+                Download Transporter for macOS
+                <small>Apple Silicon · free · runs entirely on your machine</small>
+            </a>
+        </div>
+        <div class="buttons">
+            <a class="btn" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.0.0.zxp">
+                AE extension (.zxp)
+                <small>After Effects panel</small>
+            </a>
+            <a class="btn" href="https://www.figma.com/community/plugin/1677006395591094645">
+                Figma plugin
+                <small>Figma Community</small>
+            </a>
+        </div>
+    </div>
+
+    <section>
+        <div class="divider"><span>Setup</span></div>
+        <ol>
+            <li><strong>Install the hub app</strong> — open the DMG and drag
+                Transporter to Applications. It runs a local bridge on your
+                machine; no account, no cloud.</li>
+            <li><strong>Install the AE extension</strong> — open the
+                <code>.zxp</code> with a ZXP installer
+                (<a href="https://aescripts.com/learn/zxp-installer/">aescripts
+                ZXP Installer</a> is free), then restart After Effects and open
+                <em>Window&nbsp;→&nbsp;Extensions&nbsp;→&nbsp;Transporter</em>.</li>
+            <li><strong>Install the Figma plugin</strong> from the
+                <a href="https://www.figma.com/community/plugin/1677006395591094645">Community
+                page</a>.</li>
+            <li>With the hub open: select a gradient-filled layer in Figma and
+                hit <em>Send to After Effects</em>. The gradient lands on your
+                selected shape layer and is saved to the library.</li>
+        </ol>
+        <div class="note">
+            <strong>macOS will warn on first launch</strong> — Transporter is
+            not notarized with Apple. Right-click the app and choose
+            <em>Open</em>; if macOS still refuses, approve it under
+            <em>System Settings → Privacy &amp; Security → Open Anyway</em>.
+            You only need to do this once.
+        </div>
+        <p class="fine">The AE extension is signed with a self-signed
+        certificate — your ZXP installer may show an "unverified publisher"
+        notice. That's expected.</p>
+    </section>
+
+    <section>
+        <div class="divider"><span>Requirements</span></div>
+        <p class="fine">macOS on Apple Silicon · After Effects 2024 or later
+        (developed and tested on AE 2026) · Figma desktop or web.
+        Everything runs locally — Transporter makes no network requests
+        beyond your own machine.</p>
+    </section>
+
+    <footer>
+        Transporter v1.0.0 · made by Thomas Latvys
+    </footer>
+</div>
+</body>
+</html>
