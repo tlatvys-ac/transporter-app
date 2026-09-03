@@ -113,11 +113,16 @@
     .fine { color: var(--muted); font-size: 12px; }
     .shots {
         display: flex;
-        gap: 14px;
+        gap: 16px;
         align-items: flex-start;
         flex-wrap: wrap;
+        /* break out of the 660px text column: take up to 1080px of
+           the viewport, centered, while the prose stays narrow */
+        width: min(1080px, calc(100vw - 48px));
+        margin-left: 50%;
+        transform: translateX(-50%);
     }
-    .shots figure { margin: 0; flex: 1 1 180px; min-width: 150px; }
+    .shots figure { margin: 0; flex: 1 1 280px; min-width: 240px; }
     .shots img {
         display: block;
         width: 100%;
