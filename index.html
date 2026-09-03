@@ -94,6 +94,8 @@
         color: var(--muted);
     }
     ol { margin: 0; padding-left: 22px; }
+    ul.sub { margin: 6px 0 0; padding-left: 18px; list-style: disc; }
+    ul.sub li { margin-bottom: 4px; }
     li { margin-bottom: 10px; }
     li::marker { color: var(--accent); font-weight: 700; }
     a { color: var(--accent); }
@@ -109,6 +111,21 @@
     }
     .note strong { color: var(--gold); }
     .fine { color: var(--muted); font-size: 12px; }
+    .shots { display: flex; flex-direction: column; gap: 22px; }
+    .shots figure { margin: 0; }
+    .shots img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+    }
+    .shots figcaption {
+        margin-top: 8px;
+        font-size: 12px;
+        color: var(--muted);
+        text-align: center;
+    }
     footer {
         margin-top: 56px;
         text-align: center;
@@ -155,17 +172,45 @@
     </div>
 
     <section>
+        <div class="divider"><span>About</span></div>
+        <p>Transporter runs a local bridge on your machine between Figma
+        and After Effects. Gradients you send are applied instantly and
+        collected in a reusable library, so you can re-apply them in
+        either app whenever you need them.</p>
+    </section>
+
+    <section>
+        <div class="divider"><span>What it looks like</span></div>
+        <div class="shots">
+            <figure>
+                <img src="images/hub.png" alt="The Transporter hub app showing the gradient library"
+                     width="580" loading="lazy">
+                <figcaption>The hub — your gradient library, applied to
+                either app with one click.</figcaption>
+            </figure>
+            <figure>
+                <img src="images/ae-panel.png" alt="The Transporter panel inside After Effects"
+                     width="636" loading="lazy">
+                <figcaption>The After Effects panel — the library, in AE,
+                with flip and rotate controls.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section>
         <div class="divider"><span>Setup</span></div>
         <ol>
-            <li><strong>Install the hub app</strong> — on macOS, open the
-                DMG and drag Transporter to Applications; on Windows, run
-                the setup installer. It runs a local bridge on your
-                machine; no account, no cloud.</li>
+            <li><strong>Install the hub app</strong>
+                <ul class="sub">
+                    <li>macOS: open the DMG and drag Transporter to
+                        Applications.</li>
+                    <li>Windows: run the setup installer.</li>
+                </ul>
+            </li>
             <li><strong>Install the AE extension</strong> — open the
                 <code>.zxp</code> with a ZXP installer
                 (<a href="https://aescripts.com/learn/zxp-installer/">aescripts
-                ZXP Installer</a> is free), then restart After Effects and open
-                <em>Window&nbsp;→&nbsp;Extensions&nbsp;→&nbsp;Transporter</em>.</li>
+                ZXP Installer</a> is free).</li>
             <li><strong>Install the Figma plugin</strong> from the
                 <a href="https://www.figma.com/community/plugin/1677006395591094645">Community
                 page</a> <span class="fine">(currently in Figma's review
