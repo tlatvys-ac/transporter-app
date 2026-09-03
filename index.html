@@ -111,18 +111,23 @@
     }
     .note strong { color: var(--gold); }
     .fine { color: var(--muted); font-size: 12px; }
-    .shots { display: flex; flex-direction: column; gap: 22px; }
-    .shots figure { margin: 0; }
+    .shots {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+    .shots figure { margin: 0; flex: 1 1 180px; min-width: 150px; }
     .shots img {
         display: block;
         width: 100%;
         height: auto;
-        border-radius: 10px;
+        border-radius: 8px;
         border: 1px solid var(--border);
     }
     .shots figcaption {
-        margin-top: 8px;
-        font-size: 12px;
+        margin-top: 6px;
+        font-size: 11px;
         color: var(--muted);
         text-align: center;
     }
@@ -183,16 +188,19 @@
         <div class="divider"><span>What it looks like</span></div>
         <div class="shots">
             <figure>
+                <img src="images/figma-plugin.png" alt="The Transporter Figma plugin"
+                     loading="lazy">
+                <figcaption>The Figma plugin</figcaption>
+            </figure>
+            <figure>
                 <img src="images/hub.png" alt="The Transporter hub app showing the gradient library"
-                     width="580" loading="lazy">
-                <figcaption>The hub — your gradient library, applied to
-                either app with one click.</figcaption>
+                     loading="lazy">
+                <figcaption>The hub &amp; library</figcaption>
             </figure>
             <figure>
                 <img src="images/ae-panel.png" alt="The Transporter panel inside After Effects"
-                     width="636" loading="lazy">
-                <figcaption>The After Effects panel — the library, in AE,
-                with flip and rotate controls.</figcaption>
+                     loading="lazy">
+                <figcaption>The After Effects panel</figcaption>
             </figure>
         </div>
     </section>
