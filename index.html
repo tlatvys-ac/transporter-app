@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Transporter — beam gradients from Figma into After Effects</title>
-<link rel="icon" type="image/png" href="images/favicon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="description" content="Transporter faithfully transports gradients — stops, colors, and per-stop opacity — from Figma to After Effects, and keeps them in a reusable local library.">
 <style>
@@ -41,14 +42,8 @@
         gap: 14px;
         margin-bottom: 48px;
     }
-    .mark { width: 96px; height: 96px; color: #FFF; }
-    h1 {
-        margin: 0;
-        font-size: 22px;
-        font-weight: 700;
-        letter-spacing: 0.3em;
-        color: var(--text-strong);
-    }
+    .logo { margin: 0; line-height: 0; }
+    .logo img { display: block; width: min(380px, 88vw); height: auto; }
     .tagline { margin: 0; color: var(--muted); font-size: 15px; max-width: 420px; }
 
     .buttons {
@@ -156,23 +151,22 @@
 <body>
 <div class="wrap">
     <div class="hero">
-        <svg class="mark" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="beam" x1="256.977" y1="250.096" x2="256.977" y2="479.601" gradientUnits="userSpaceOnUse"><stop offset=".076" stop-color="currentColor"/><stop offset=".96" stop-color="currentColor" stop-opacity=".1"/></linearGradient></defs><path d="M319.623,446.052c0,14.923-28.047,32.696-62.646,32.696s-62.646-17.774-62.646-32.696l23.783-227.651c0-11.023,17.399-19.959,38.862-19.959s38.862,8.936,38.862,19.959l23.783,227.651Z" fill="url(#beam)"/><path d="M463.655,179.181c-24.4-27.739-60.111-49.103-102.46-62.351-5.72-1.79-10.041-6.437-11.627-12.217-11.271-41.082-48.955-71.36-93.571-71.36s-82.301,30.278-93.571,71.36c-1.586,5.78-5.907,10.428-11.627,12.217-42.349,13.249-78.059,34.612-102.45,62.351h0c-6.166,7.01-5.743,17.625.961,24.122l.002.002c42.727,41.366,119.998,66.074,206.696,66.074s163.959-24.707,206.676-66.074l.007-.007c6.702-6.495,7.127-17.106.966-24.117h0ZM255.997,68.242c18.418,0,34.99,8.071,46.362,20.863,5.24,5.895.325,15.124-7.521,14.317-12.662-1.301-25.631-1.968-38.821-1.968h-.01c-13.201,0-26.177.663-38.847,1.962-7.845.804-12.758-8.424-7.519-14.317,11.368-12.787,27.939-20.857,46.356-20.857ZM361.007,219.838c-31.589,9.515-67.901,14.55-105,14.55s-73.421-5.035-105.01-14.55c-20.39-6.137-38.494-14.078-53.607-23.446-5.223-3.238-5.508-10.709-.584-14.385,15.396-11.492,33.984-21.194,54.978-28.621,3.042-1.079,6.133-2.099,9.272-3.081,10.896-3.402,22.287-6.201,34.018-8.369,19.595-3.625,40.142-5.492,60.932-5.492h.01c20.79,0,41.318,1.866,60.903,5.492,11.731,2.158,23.123,4.957,34.018,8.369,3.139.982,6.24,2.012,9.292,3.091,20.992,7.419,39.573,17.125,54.966,28.613,4.925,3.676,4.64,11.148-.583,14.386-15.112,9.367-33.216,17.308-53.605,23.445Z" fill="currentColor"/></svg>
-        <h1>TRANSPORTER</h1>
+        <h1 class="logo"><img src="images/transporter-wordmark@4x.png" alt="Transporter" width="1364" height="312"></h1>
         <p class="tagline">Beam gradients from Figma into After Effects —
         stops, colors, and opacity, faithfully — and keep every gradient
         in a reusable local library.</p>
         <div class="buttons">
-            <a class="btn" id="dl-mac" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.4.1-arm64.dmg">
+            <a class="btn" id="dl-mac" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.4.2-arm64.dmg">
                 Download for macOS
                 <small>Apple Silicon · free · local-only</small>
             </a>
-            <a class="btn" id="dl-win" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.4.1.exe">
+            <a class="btn" id="dl-win" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.4.2.exe">
                 Download for Windows
                 <small>x64 installer · free · local-only</small>
             </a>
         </div>
         <div class="buttons">
-            <a class="btn" id="dl-zxp" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.1.2.zxp">
+            <a class="btn" id="dl-zxp" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.1.3.zxp">
                 AE extension (.zxp)
                 <small>After Effects panel</small>
             </a>
@@ -259,7 +253,7 @@
     </section>
 
     <footer>
-        Transporter <span id="version">v1.4.1</span> ·
+        Transporter <span id="version">v1.4.2</span> ·
         <a href="https://github.com/tlatvys-ac/transporter-app/releases">release notes</a> ·
         made by Thomas Latvys ·
         see also <a href="https://tlatvys-ac.github.io/anchor-buddy-app/">Anchor Buddy</a>
