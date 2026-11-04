@@ -8,280 +8,611 @@
 <link rel="icon" type="image/png" sizes="64x64" href="images/favicon.png">
 <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 <meta name="description" content="Transporter faithfully transports gradients — stops, colors, and per-stop opacity — from Figma to After Effects, and keeps them in a reusable local library.">
+<meta name="theme-color" content="#1E2024">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tlatvys-ac.github.io/transporter-app/">
+<meta property="og:title" content="Transporter — beam gradients from Figma into After Effects">
+<meta property="og:description" content="Transporter faithfully transports gradients — stops, colors, and per-stop opacity — from Figma to After Effects, and keeps them in a reusable local library.">
+<meta property="og:image" content="https://tlatvys-ac.github.io/transporter-app/images/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="The Transporter wordmark next to the hub app's gradient library: four saved gradients, each with Apply in AE and Apply in Figma buttons">
+<meta name="twitter:card" content="summary_large_image">
 <style>
     :root {
         --bg: #1E2024;
         --surface: #2A2D33;
-        --border: #4A4D54;
+        --border: #3E424A;
         --text: #DDD;
         --text-strong: #FFF;
-        --muted: #8A8F98;
+        --muted: #9BA1AA;
         --accent: #4DA6FF;
-        --green: #4DB86B;
-        --gold: #FFC53D;
+        --accent-hover: #74BAFF;
+        --on-accent: #0B1A2B;
+        /* the wordmark's colors */
+        --gold: #F2B733;
+        --navy: #00001F;
     }
     * { box-sizing: border-box; }
+    html { overflow-x: clip; }
     body {
         margin: 0;
         background: var(--bg);
         color: var(--text);
         font-family: -apple-system, "SF Pro Text", "Helvetica Neue", "Segoe UI", sans-serif;
+        font-size: 16px;
         line-height: 1.6;
         -webkit-font-smoothing: antialiased;
     }
     .wrap {
         max-width: 660px;
         margin: 0 auto;
-        padding: 56px 24px 80px;
+        padding: 64px 24px 48px;
     }
+    a { color: var(--accent); text-underline-offset: 2px; }
+    a:hover { color: var(--accent-hover); }
+    :focus-visible {
+        outline: 2px solid var(--text-strong);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+    h1, h2, h3, .tagline, figcaption { text-wrap: balance; }
+
+    /* ---------------------------------------------------------- hero */
     .hero {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
-        gap: 14px;
-        margin-bottom: 48px;
     }
-    .logo { margin: 0; line-height: 0; }
-    .logo img { display: block; width: min(380px, 88vw); height: auto; }
-    .tagline { margin: 0; color: var(--muted); font-size: 15px; max-width: 420px; }
-
+    h1.logo { margin: 0; line-height: 0; }
+    h1.logo img { display: block; width: min(380px, 88vw); height: auto; }
+    .tagline {
+        margin: 20px 0 0;
+        color: #B4B9C1;
+        font-size: 18px;
+        max-width: 500px;
+    }
     .buttons {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
         justify-content: center;
-        margin-top: 10px;
+        gap: 12px;
+        margin-top: 28px;
     }
     .btn {
         display: inline-block;
-        background: var(--surface);
-        border: 1px solid var(--accent);
-        border-radius: 6px;
-        color: var(--text-strong);
-        font-size: 14px;
+        min-width: 296px;
+        text-align: center;
+        background: var(--accent);
+        border-radius: 8px;
+        color: var(--on-accent);
+        font-size: 16px;
         font-weight: 700;
-        padding: 10px 22px;
+        line-height: 1.4;
+        padding: 12px 32px;
         text-decoration: none;
-        transition: border-color 120ms, color 120ms, background-color 120ms;
+        box-shadow: 0 6px 24px rgba(77, 166, 255, 0.25);
+        transition: background-color 120ms, box-shadow 120ms, transform 120ms;
         white-space: nowrap;
     }
-    .btn:hover { border-color: #FFF; }
-    .btn:active { background: rgba(77, 166, 255, 0.15); }
-    .btn small { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }
+    .btn:hover {
+        background: var(--accent-hover);
+        color: var(--on-accent);
+        box-shadow: 0 8px 32px rgba(77, 166, 255, 0.4);
+        transform: translateY(-1px);
+    }
+    .btn:active { transform: none; box-shadow: 0 4px 16px rgba(77, 166, 255, 0.25); }
+    /* the other platform's button: outlined, so the visitor's own stands out */
+    .btn.btn-secondary {
+        background: transparent;
+        color: var(--text-strong);
+        box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    .btn.btn-secondary:hover {
+        background: rgba(77, 166, 255, 0.12);
+        color: var(--text-strong);
+        box-shadow: inset 0 0 0 1px var(--accent-hover);
+    }
+    .btn.btn-secondary small { color: var(--muted); }
+    .btn small {
+        display: block;
+        font-weight: 500;
+        font-size: 12px;
+        color: rgba(11, 26, 43, 0.72);
+    }
+    .hero-notes {
+        margin: 16px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+    }
 
-    section { margin-top: 40px; }
-    .divider {
+    /* The panel and plugin: needed on both platforms, one step below
+       the app download. */
+    .addons {
+        width: min(604px, 100%);
+        margin-top: 28px;
+        padding: 16px 16px 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+    .addons-label {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-strong);
+    }
+    .addons .buttons { margin-top: 12px; }
+    .btn.btn-addon {
+        flex: 1 1 240px;
+        min-width: 0;
+        padding: 10px 20px;
+        font-size: 15px;
+        background: var(--bg);
+        color: var(--text-strong);
+        box-shadow: inset 0 0 0 1px var(--border);
+    }
+    .btn.btn-addon:hover {
+        background: var(--bg);
+        color: var(--text-strong);
+        box-shadow: inset 0 0 0 1px var(--accent);
+    }
+    .btn.btn-addon small { color: var(--muted); }
+
+    /* --------------------------------------------------- hero image */
+    /* Breaks out of the text column, like the gallery. */
+    .hero-figure { margin: 44px 0 0; }
+    .shot.hero-media {
+        width: min(600px, calc(100vw - 48px));
+        border-radius: 12px;
+        box-shadow: 0 24px 64px rgba(0, 0, 0, 0.45);
+    }
+    .hero-figure figcaption {
+        margin-top: 10px;
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    /* ------------------------------------------------------ sections */
+    section { margin-top: 72px; }
+    h2.divider {
         display: flex;
         align-items: center;
-        gap: 10px;
-        margin-bottom: 14px;
+        gap: 12px;
+        margin: 0 0 24px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--muted);
     }
-    .divider::before, .divider::after {
+    h2.divider::before, h2.divider::after {
         content: "";
         flex: 1;
         height: 1px;
         background: var(--border);
     }
-    .divider span {
-        font-size: 11px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--muted);
+    h3 {
+        margin: 32px 0 8px;
+        font-size: 17px;
+        font-weight: 700;
+        line-height: 1.4;
+        color: var(--text-strong);
     }
-    ol { margin: 0; padding-left: 22px; }
-    ul.sub { margin: 6px 0 0; padding-left: 18px; list-style: disc; }
-    ul.sub li { margin-bottom: 4px; }
-    li { margin-bottom: 10px; }
-    li::marker { color: var(--accent); font-weight: 700; }
-    a { color: var(--accent); }
-    .note {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-left: 3px solid var(--gold);
-        border-radius: 6px;
-        padding: 12px 14px;
-        font-size: 13px;
-        color: var(--text);
-        margin-top: 14px;
-    }
-    .note strong { color: var(--gold); }
-    .fine { color: var(--muted); font-size: 12px; }
-    .shots {
-        display: flex;
-        gap: 16px;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        /* break out of the 660px text column: take up to 1080px of
-           the viewport, centered, while the prose stays narrow */
-        width: min(1080px, calc(100vw - 48px));
-        margin-left: 50%;
-        transform: translateX(-50%);
-    }
-    .shots figure { margin: 0; flex: 1 1 280px; min-width: 240px; }
-    .shots img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        border: 1px solid var(--border);
-    }
-    .shots figcaption {
-        margin-top: 6px;
-        font-size: 11px;
-        color: var(--muted);
-        text-align: center;
-    }
-    footer {
-        margin-top: 56px;
-        text-align: center;
-        color: var(--muted);
-        font-size: 12px;
-    }
+    p { margin: 0 0 12px; }
+    .lead { font-size: 17px; }
+    .fine { color: var(--muted); font-size: 14px; }
+    strong { color: var(--text-strong); }
     code {
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 4px;
         padding: 1px 6px;
-        font-size: 12px;
+        font: 14px/1.5 ui-monospace, "SF Mono", Menlo, monospace;
+    }
+
+    /* ------------------------------------------------------- gallery */
+    /* Screenshots break out of the text column. */
+    .gallery {
+        width: min(1080px, calc(100vw - 48px));
+        margin-left: 50%;
+        transform: translateX(-50%);
+    }
+    .gallery h3 {
+        margin: 0 0 14px;
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        text-align: center;
+    }
+    /* Columns in proportion to each shot's aspect ratio, so both come out
+       the same height, and capped so neither is shown above its own size. */
+    .shots {
+        display: grid;
+        grid-template-columns: 1097fr 1404fr;
+        gap: 16px;
+        max-width: 1040px;
+        margin: 0 auto;
+    }
+    .shots figure { margin: 0; }
+    .shot {
+        display: block;
+        width: 100%;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+        overflow: hidden;
+        cursor: zoom-in;
+        transition: border-color 120ms;
+    }
+    .shot:hover { border-color: var(--accent); }
+    .shot:focus-visible { border-radius: 10px; }
+    .shot.hero-media:focus-visible { border-radius: 12px; }
+    .shot img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+    .shots figcaption {
+        margin-top: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        text-align: center;
+    }
+    figcaption strong { font-weight: 600; }
+
+    /* ------------------------------------------------------ features */
+    .features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .features li {
+        padding: 16px 18px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    .features li strong {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 16px;
+    }
+
+    /* --------------------------------------------------------- setup */
+    .steps {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: step;
+    }
+    .steps > li {
+        position: relative;
+        margin-bottom: 16px;
+        padding-left: 44px;
+        counter-increment: step;
+    }
+    /* gold on navy, like the wordmark */
+    .steps > li::before {
+        content: counter(step);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--gold);
+        color: var(--navy);
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 28px;
+        text-align: center;
+    }
+    ul.sub { margin: 6px 0 0; padding-left: 18px; }
+    ul.sub li { margin-bottom: 4px; }
+    ul.sub li::marker { color: var(--gold); }
+
+    .callout {
+        margin: 28px 0 0;
+        padding: 16px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-left: 3px solid var(--gold);
+        border-radius: 8px;
+        scroll-margin-top: 24px;
+    }
+    .callout h3 { margin: 0 0 6px; font-size: 16px; }
+    .callout p { margin: 0 0 8px; font-size: 15px; }
+    .callout p:last-child { margin-bottom: 0; }
+
+    /* ------------------------------------------------------ lightbox */
+    .lightbox {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 11, 13, 0.92);
+        z-index: 100;
+        cursor: zoom-out;
+        padding: 24px;
+    }
+    .lightbox[hidden] { display: none; }
+    .lightbox img {
+        max-width: 96vw;
+        max-height: 92vh;
+        width: auto;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+    }
+    .lightbox-close {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        border: 1px solid var(--border);
+        border-radius: 50%;
+        background: var(--surface);
+        color: var(--text-strong);
+        font-size: 22px;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    /* -------------------------------------------------------- footer */
+    footer {
+        margin-top: 88px;
+        padding-top: 24px;
+        border-top: 1px solid var(--border);
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+    }
+    footer p { margin: 0 0 6px; }
+    footer a { text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .sep { margin: 0 6px; opacity: 0.5; }
+
+    @media (max-width: 620px) {
+        .wrap { padding-top: 48px; }
+        .shots, .features { grid-template-columns: 1fr; }
+        .shots { gap: 32px; }
+        section { margin-top: 56px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        * { transition: none !important; }
     }
 </style>
 </head>
 <body>
 <div class="wrap">
-    <div class="hero">
+    <header class="hero">
         <h1 class="logo"><img src="images/transporter-wordmark@4x.png" alt="Transporter" width="1364" height="312"></h1>
-        <p class="tagline">Beam gradients from Figma into After Effects —
+        <p class="tagline">Beam gradients from Figma into After&nbsp;Effects&nbsp;—
         stops, colors, and opacity, faithfully — and keep every gradient
         in a reusable local library.</p>
-        <div class="buttons">
+        <div class="buttons" id="buttons">
             <a class="btn" id="dl-mac" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter-1.4.2-arm64.dmg">
                 Download for macOS
                 <small>Apple Silicon · free · local-only</small>
             </a>
-            <a class="btn" id="dl-win" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.4.2.exe">
+            <a class="btn btn-secondary" id="dl-win" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter.Setup.1.4.2.exe">
                 Download for Windows
                 <small>x64 installer · free · local-only</small>
             </a>
         </div>
-        <div class="buttons">
-            <a class="btn" id="dl-zxp" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.1.3.zxp">
-                AE extension (.zxp)
-                <small>After Effects panel</small>
-            </a>
-            <a class="btn" href="https://www.figma.com/community/plugin/1677006395591094645">
-                Figma plugin
-                <small>Figma Community · pending review</small>
-            </a>
+        <p class="hero-notes">
+            Not notarized or code-signed yet: your system will warn on first launch.
+            <a href="#unsigned">How to open it</a>
+        </p>
+        <div class="addons">
+            <p class="addons-label">Then add the AE panel and the Figma plugin — needed on Mac and Windows</p>
+            <div class="buttons">
+                <a class="btn btn-addon" id="dl-zxp" href="https://github.com/tlatvys-ac/transporter-app/releases/latest/download/Transporter_v1.1.3.zxp">
+                    AE extension (.zxp)
+                    <small>After Effects panel</small>
+                </a>
+                <a class="btn btn-addon" href="https://www.figma.com/community/plugin/1677006395591094645">
+                    Figma plugin
+                    <small>Figma Community · pending review</small>
+                </a>
+            </div>
         </div>
-    </div>
+        <figure class="hero-figure">
+            <button class="shot hero-media" type="button" aria-haspopup="dialog">
+                <picture>
+                    <source type="image/avif" srcset="images/hub.avif">
+                    <img src="images/hub.png" width="1160" height="1224" decoding="async" fetchpriority="high" alt="The Transporter hub app showing the gradient library: four saved gradients, each with Apply in AE and Apply in Figma buttons, and green Figma and AE connection badges">
+                </picture>
+            </button>
+            <figcaption><strong>The hub &amp; library</strong> — every gradient you send, saved to re-apply in either app</figcaption>
+        </figure>
+    </header>
 
+    <main>
     <section>
-        <div class="divider"><span>About</span></div>
-        <p>Transporter runs a local bridge on your machine between Figma
+        <h2 class="divider">About</h2>
+        <p class="lead">Transporter runs a local bridge on your machine between Figma
         and After Effects. Gradients you send are applied instantly and
         collected in a reusable library, so you can re-apply them in
         either app whenever you need them.</p>
     </section>
 
     <section>
-        <div class="divider"><span>What it looks like</span></div>
-        <div class="shots">
-            <figure>
-                <img src="images/figma-plugin.png" alt="The Transporter Figma plugin"
-                     loading="lazy">
-                <figcaption>The Figma plugin</figcaption>
-            </figure>
-            <figure>
-                <img src="images/hub.png" alt="The Transporter hub app showing the gradient library"
-                     loading="lazy">
-                <figcaption>The hub &amp; library</figcaption>
-            </figure>
-            <figure>
-                <img src="images/ae-panel.png" alt="The Transporter panel inside After Effects"
-                     loading="lazy">
-                <figcaption>The After Effects panel</figcaption>
-            </figure>
+        <h2 class="divider">What it looks like</h2>
+        <div class="gallery">
+            <div class="shots">
+                <div>
+                    <h3>In Figma</h3>
+                    <figure>
+                        <button class="shot" type="button" aria-haspopup="dialog">
+                            <picture>
+                                <source type="image/avif" srcset="images/figma-plugin.avif">
+                                <img src="images/figma-plugin.png" width="452" height="412" loading="lazy" decoding="async" alt="The Transporter Figma plugin showing the selected layer's gradient, Rectangle 1, with a Send to After Effects button">
+                            </picture>
+                        </button>
+                        <figcaption><strong>The Figma plugin</strong> — select a gradient-filled layer and send it to After Effects</figcaption>
+                    </figure>
+                </div>
+                <div>
+                    <h3>In After Effects</h3>
+                    <figure>
+                        <button class="shot" type="button" aria-haspopup="dialog">
+                            <picture>
+                                <source type="image/avif" srcset="images/ae-panel.avif">
+                                <img src="images/ae-panel.png" width="1272" height="906" loading="lazy" decoding="async" alt="The Transporter panel inside After Effects, with Flip Direction and Rotate buttons above the same four library gradients">
+                            </picture>
+                        </button>
+                        <figcaption><strong>The After Effects panel</strong> — click a gradient to apply it to the selected shape layers</figcaption>
+                    </figure>
+                </div>
+            </div>
         </div>
     </section>
 
     <section>
-        <div class="divider"><span>Setup</span></div>
-        <ol>
-            <li><strong>Install the hub app</strong>
+        <h2 class="divider">Features</h2>
+        <ul class="features">
+            <li><strong>Faithful gradients</strong>Stops, colors, and per-stop opacity, transported faithfully from Figma to After Effects</li>
+            <li><strong>Applied instantly</strong>A gradient you send lands on your selected shape layer</li>
+            <li><strong>A reusable library</strong>Every gradient is saved, so you can re-apply it in either app whenever you need it</li>
+            <li><strong>Local-only and free</strong>Everything runs on your machine: no network requests beyond it</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="divider">Setup</h2>
+        <ol class="steps">
+            <li><strong>Install the hub app.</strong>
                 <ul class="sub">
                     <li>macOS: open the DMG and drag Transporter to
                         Applications.</li>
                     <li>Windows: run the setup installer.</li>
                 </ul>
             </li>
-            <li><strong>Install the AE extension</strong> — open the
+            <li><strong>Install the AE extension.</strong> Open the
                 <code>.zxp</code> with a ZXP installer
                 (<a href="https://aescripts.com/learn/zxp-installer/">aescripts
                 ZXP Installer</a> is free).</li>
             <li><strong>Install the Figma plugin</strong> from the
                 <a href="https://www.figma.com/community/plugin/1677006395591094645">Community
-                page</a> <span class="fine">(currently in Figma's review
-                queue — check back soon if the page isn't live yet)</span>.</li>
-            <li>With the hub open: select a gradient-filled layer in Figma and
-                hit <em>Send to After Effects</em>. The gradient lands on your
-                selected shape layer and is saved to the library.</li>
+                page</a>. It's currently in Figma's review queue — check back
+                soon if the page isn't live yet.</li>
+            <li><strong>Send a gradient.</strong> With the hub open, select a
+                gradient-filled layer in Figma and hit <em>Send to After
+                Effects</em>. The gradient lands on your selected shape layer
+                and is saved to the library.</li>
         </ol>
-        <div class="note">
-            <strong>macOS will warn on first launch</strong> — Transporter is
+
+        <div class="callout" id="unsigned">
+            <h3>If an installer warns you</h3>
+            <p><strong>macOS will warn on first launch:</strong> Transporter is
             not notarized with Apple. Right-click the app and choose
             <em>Open</em>; if macOS still refuses, approve it under
             <em>System Settings → Privacy &amp; Security → Open Anyway</em>.
-            You only need to do this once.
+            You only need to do this once.</p>
+            <p><strong>Windows SmartScreen will warn too:</strong> the installer
+            isn't code-signed. Click <em>More info → Run anyway</em>.</p>
+            <p><strong>The AE extension</strong> is signed with a self-signed
+            certificate, so your ZXP installer may show an "unverified
+            publisher" notice. That's expected.</p>
         </div>
-        <div class="note">
-            <strong>Windows SmartScreen will warn too</strong> — the installer
-            isn't code-signed. Click <em>More info → Run anyway</em>.
-        </div>
-        <p class="fine">The AE extension is signed with a self-signed
-        certificate — your ZXP installer may show an "unverified publisher"
-        notice. That's expected.</p>
     </section>
 
     <section>
-        <div class="divider"><span>Requirements</span></div>
+        <h2 class="divider">Requirements</h2>
         <p class="fine">macOS (Apple Silicon) or Windows (x64) · After
         Effects 2024 or later (developed and tested on AE 2026) · Figma
         desktop or web. Everything runs locally — Transporter makes no
         network requests beyond your own machine.</p>
     </section>
+    </main>
 
     <footer>
-        Transporter <span id="version">v1.4.2</span> ·
-        <a href="https://github.com/tlatvys-ac/transporter-app/releases">release notes</a> ·
-        made by Thomas Latvys ·
-        see also <a href="https://tlatvys-ac.github.io/anchor-buddy-app/">Anchor Buddy</a>,
-        <a href="https://tlatvys-ac.github.io/aedoom-app/">AEDoom</a>,
-        <a href="https://tlatvys-ac.github.io/motionref-app/">MotionRef</a>,
-        and <a href="https://tlatvys-ac.github.io/fluidlab-app/">FluidLab</a>
+        <p>Transporter <span id="version">v1.4.2</span><span class="sep">·</span><wbr><a href="https://github.com/tlatvys-ac/transporter-app/releases">Release notes</a><span class="sep">·</span><wbr>Made&nbsp;by&nbsp;Thomas&nbsp;Latvys</p>
+        <p>More tools:
+            <a href="https://tlatvys-ac.github.io/fluidlab-app/">FluidLab</a><span class="sep">·</span><wbr><a href="https://tlatvys-ac.github.io/refractlab-app/">RefractLab</a><span class="sep">·</span><wbr><a href="https://tlatvys-ac.github.io/anchor-buddy-app/">Anchor&nbsp;Buddy</a><span class="sep">·</span><wbr><a href="https://tlatvys-ac.github.io/aedoom-app/">AEDoom</a><span class="sep">·</span><wbr><a href="https://tlatvys-ac.github.io/motionref-app/">MotionRef</a>
+        </p>
     </footer>
-
-    <script>
-    // Keep the version and download links pointing at the latest
-    // release automatically; the hardcoded values above are the
-    // fallback if this fetch fails.
-    fetch("https://api.github.com/repos/tlatvys-ac/transporter-app/releases/latest")
-        .then((r) => r.json())
-        .then((rel) => {
-            const v = (rel.tag_name || "").replace(/^v/, "");
-            if (v) document.getElementById("version").textContent = "v" + v;
-            const link = (id, re) => {
-                const asset = (rel.assets || []).find((a) => re.test(a.name));
-                const el = document.getElementById(id);
-                if (asset && el) el.href = asset.browser_download_url;
-            };
-            link("dl-mac", /arm64\.dmg$/);
-            link("dl-win", /\.exe$/);
-            link("dl-zxp", /\.zxp$/);
-        })
-        .catch(() => {});
-    </script>
 </div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview" hidden>
+    <img id="lightbox-img" src="" alt="">
+    <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close preview">×</button>
+</div>
+
+<script>
+// Click (or Enter/Space on) a screenshot to preview it at full size;
+// click anywhere, press Escape, or use the close button to close. Focus
+// moves into the preview and back to the screenshot that opened it.
+(() => {
+    const box = document.getElementById("lightbox");
+    const big = document.getElementById("lightbox-img");
+    const closeBtn = document.getElementById("lightbox-close");
+    let opener = null;
+    const open = (btn) => {
+        const img = btn.querySelector("img");
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt;
+        opener = btn;
+        box.hidden = false;
+        document.body.style.overflow = "hidden";
+        closeBtn.focus();
+    };
+    const close = () => {
+        if (box.hidden) return;
+        box.hidden = true;
+        document.body.style.overflow = "";
+        if (opener) opener.focus();
+    };
+    document.querySelectorAll(".shot").forEach((btn) => btn.addEventListener("click", () => open(btn)));
+    box.addEventListener("click", close);
+    document.addEventListener("keydown", (e) => {
+        if (box.hidden) return;
+        if (e.key === "Escape") close();
+        if (e.key === "Tab") { e.preventDefault(); closeBtn.focus(); }
+    });
+})();
+
+// Windows visitors get the Windows button first and highlighted.
+if (/Windows/i.test(navigator.userAgent)) {
+    const mac = document.getElementById("dl-mac"), win = document.getElementById("dl-win");
+    win.classList.remove("btn-secondary");
+    mac.classList.add("btn-secondary");
+    win.parentNode.insertBefore(win, mac);
+}
+
+// Keep the version and download links pointing at the latest release
+// automatically; the hardcoded values above are the fallback if this
+// fetch fails.
+fetch("https://api.github.com/repos/tlatvys-ac/transporter-app/releases/latest")
+    .then((r) => r.json())
+    .then((rel) => {
+        const v = (rel.tag_name || "").replace(/^v/, "");
+        if (v) document.getElementById("version").textContent = "v" + v;
+        const link = (id, re) => {
+            const asset = (rel.assets || []).find((a) => re.test(a.name));
+            const el = document.getElementById(id);
+            if (asset && el) el.href = asset.browser_download_url;
+        };
+        link("dl-mac", /arm64\.dmg$/);
+        link("dl-win", /\.exe$/);
+        link("dl-zxp", /\.zxp$/);
+    })
+    .catch(() => {});
+</script>
 </body>
 </html>
